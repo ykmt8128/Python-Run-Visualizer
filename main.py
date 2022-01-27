@@ -1,5 +1,6 @@
 import subprocess
 import os
+import sys
 import shutil
 import asyncio
 from asyncio.tasks import current_task
@@ -17,7 +18,7 @@ from glotio import Runner
 
 
 def get_path(filename):
-    current_path = os.path.dirname(os.path.abspath(__file__))
+    current_path = os.path.dirname(os.path.abspath(sys.argv[0]))
     return os.path.join(current_path, filename)
 
 class MyFormatter(ImageFormatter):
@@ -134,7 +135,7 @@ def main():
             if source_filepath is None:
                 continue
             elif not os.path.isfile(source_filepath):
-                sg.popup("ファイルパスが正しくありません。", title="Error")
+                sg.popup(f"ファイルパスが正しくありません。 {source_filepath}", title="Error")
                 continue
             
             make_gif_result = make_gif(source_filepath, is_online=values["-IS_ONLINE-"])
@@ -146,7 +147,7 @@ def main():
         elif event == "サンプルファイルを開く":
             source_filepath = get_path("sample.py")
             if not os.path.isfile(source_filepath):
-                sg.popup("ファイルパスが正しくありません。", title="Error")
+                sg.popup(f"ファイルパスが正しくありません。 {source_filepath}", title="Error")
                 continue
             
             make_gif_result = make_gif(source_filepath, is_online=values["-IS_ONLINE-"])
